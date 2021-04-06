@@ -1,21 +1,17 @@
 import React from "react";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { RegisterModal } from "./RegisterModal";
-import { LoginModal } from "./LoginModal";
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import List from "@material-ui/core/List";
-// import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import Button from "@material-ui/core/Button";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -41,12 +37,8 @@ const useStyles = makeStyles((theme) => ({
     }),
     marginRight: drawerWidth,
   },
-  // toolbar: {
-  //   flexWrap: "wrap",
-  // },
   title: {
     flexGrow: 1,
-    textDecoration: "none",
   },
   hide: {
     display: "none",
@@ -106,24 +98,31 @@ export function AppNavbar() {
           [classes.appBarShift]: open,
         })}
       >
-        <Toolbar className={classes.toolbar}>
-        <RegisterModal />
-        <LoginModal />
-          <Link variant="h4" color="secondary" noWrap className={classes.title} href="/">
+        <Toolbar>
+          <Link href="/sign-in" color="secondary">Sign In</Link>
+          <Link
+            variant="h4"
+            color="secondary"
+            noWrap
+            className={classes.title}
+            href="/"
+            style={{
+              fontSize: "1.5rem",
+              textDecoration: "none",
+            }}
+          >
             Affirmation-Mart
           </Link>
-          <Button
+          <IconButton
             color="secondary"
             variant="contained"
             size="md"
             aria-label="open shopping cart"
-            edge="end"
-            endIcon={<ShoppingCartIcon />}
             onClick={handleDrawerOpen}
             className={clsx(open && classes.hide)}
           >
-            View Cart
-          </Button>
+            <ShoppingCartIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
       <main
@@ -157,16 +156,22 @@ export function AppNavbar() {
         <List>
           {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
             <ListItem>
-            <IconButton edge="end" aria-label="delete">
-              <DeleteIcon />
-            </IconButton>
-            <ListItemText
-              primary="Single-line item"
-            />
-            <ListItemSecondaryAction>
-              <ListItemText>$$$</ListItemText>
-            </ListItemSecondaryAction>
-          </ListItem>
+              <IconButton
+                edge="end"
+                aria-label="delete"
+                style={{
+                  marginLeft: "0px",
+                  marginRight: "2px",
+                  paddingLeft: "0px",
+                }}
+              >
+                <DeleteIcon />
+              </IconButton>
+              <ListItemText primary="Single-line item" />
+              <ListItemSecondaryAction>
+                <ListItemText>$$$</ListItemText>
+              </ListItemSecondaryAction>
+            </ListItem>
           ))}
         </List>
         <Divider />
