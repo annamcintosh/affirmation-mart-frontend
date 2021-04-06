@@ -36,7 +36,7 @@ export function OrderCheckout() {
   const classes = useStyles();
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="medium">
       <Typography variant="h3" className={classes.title}>
         Order Checkout
       </Typography>
@@ -60,10 +60,10 @@ export function OrderCheckout() {
       <Typography variant="h4">
         Order Total: $$$
       </Typography>
-      <Link color="secondary" size="md" href="/" variant="button">
+      <Link color="secondary" size="medium" href="/" variant="button">
         Cancel
       </Link>
-      <Button variant="contained" color="secondary" size="md">
+      <Button variant="contained" color="secondary" size="medium">
         Place Order
       </Button>
     </Container>

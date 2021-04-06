@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: "10px",
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -99,7 +99,9 @@ export function AppNavbar() {
         })}
       >
         <Toolbar>
-          <Link href="/sign-in" color="secondary">Sign In</Link>
+          <Link href="/sign-in" color="secondary">
+            Sign In
+          </Link>
           <Link
             variant="h4"
             color="secondary"
@@ -116,7 +118,7 @@ export function AppNavbar() {
           <IconButton
             color="secondary"
             variant="contained"
-            size="md"
+            size="medium"
             aria-label="open shopping cart"
             onClick={handleDrawerOpen}
             className={clsx(open && classes.hide)}
@@ -125,13 +127,13 @@ export function AppNavbar() {
           </IconButton>
         </Toolbar>
       </AppBar>
-      <main
+      <Box
         className={clsx(classes.content, {
           [classes.contentShift]: open,
         })}
       >
         <Box className={classes.drawerHeader} />
-      </main>
+      </Box>
       <Drawer
         className={classes.drawer}
         variant="persistent"
@@ -182,6 +184,11 @@ export function AppNavbar() {
           variant="button"
           href="/checkout"
           aria-label="checkout order"
+          size="large"
+          style={{
+            padding: "6px",
+            fontSize: "1.2rem",
+          }}
         >
           Checkout
         </Link>

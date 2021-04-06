@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ProductContainer } from "./pages/ProductContainer";
-import { OrderCheckout } from "./pages/OrderCheckout";
+import { Checkout } from "./pages/Checkout";
 import "./App.css";
 import { AppNavbar } from "./pages/AppNavbar";
 import { SignInPage } from "./pages/SignInPage";
@@ -15,7 +15,7 @@ function App() {
           <AppNavbar />
         </header>
         <Switch>
-          <Route exact path="/checkout" component={OrderCheckout} />
+          <Route exact path="/checkout" component={Checkout} />
           <Route exact path="/sign-in" component={SignInPage} />
           <Route exact path="/sign-up" component={SignUpPage} />
           <Route exact path="/" component={ProductContainer} />

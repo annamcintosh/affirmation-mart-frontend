@@ -18,13 +18,6 @@
 //         image: ""
 //     },
 // ]
-// <Link size="md" color="secondary" variant="button" href="/id">
-//   Details
-// </Link>
-// <Button size="md" color="secondary" variant="text">
-//   Add to Cart
-//   <AddShoppingCartIcon />
-// </Button>
 
 import React from "react";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
@@ -59,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
   },
   heroContent: {
     backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(8, 0, 6),
+    padding: theme.spacing(6, 0, 6),
   },
   heroButtons: {
     marginTop: theme.spacing(4),
@@ -78,6 +71,10 @@ const useStyles = makeStyles((theme) => ({
   },
   cardContent: {
     flexGrow: 1,
+  },
+  cardActions: {
+    display: "flex",
+    justifyContent: "center",
   },
   footer: {
     backgroundColor: theme.palette.background.paper,
@@ -135,11 +132,11 @@ export function ProductContainer() {
                       the content.
                     </Typography>
                   </CardContent>
-                  <CardActions>
-                    <Button size="md" color="secondary">
+                  <CardActions className={classes.cardActions}>
+                    <Button size="medium" color="secondary">
                       View
                     </Button>
-                    <Button size="md" color="secondary" variant="text">
+                    <Button size="medium" color="secondary" variant="text">
                       Add to Cart
                       <AddShoppingCartIcon />
                     </Button>
