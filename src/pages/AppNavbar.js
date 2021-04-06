@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -15,7 +15,10 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { Box, Link } from "@material-ui/core";
+import { Box, Link, Typography } from "@material-ui/core";
+
+import { useSelector, useDispatch } from "react-redux";
+import { getOrderAsync } from "../features/order/orderSlice";
 
 const drawerWidth = 240;
 
@@ -78,7 +81,14 @@ const useStyles = makeStyles((theme) => ({
 export function AppNavbar() {
   const classes = useStyles();
   const theme = useTheme();
+  const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
+
+  useEffect(() => {
+    dispatch(getOrderAsync());
+  }, [dispatch]);
+
+  const { order } = useSelector((state) => state.order);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -156,28 +166,35 @@ export function AppNavbar() {
         <h1>Shopping Cart</h1>
         <Divider />
         <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem>
-              <IconButton
-                edge="end"
-                aria-label="delete"
-                style={{
-                  marginLeft: "0px",
-                  marginRight: "2px",
-                  paddingLeft: "0px",
-                }}
-              >
-                <DeleteIcon />
-              </IconButton>
-              <ListItemText primary="Single-line item" />
-              <ListItemSecondaryAction>
-                <ListItemText>$$$</ListItemText>
-              </ListItemSecondaryAction>
-            </ListItem>
-          ))}
+          {order.products ? (
+            order.products.map(({ productId, name, unitPrice }) => (
+              <ListItem>
+                <IconButton
+                  edge="end"
+                  aria-label="delete"
+                  style={{
+                    marginLeft: "0px",
+                    marginRight: "2px",
+                    paddingLeft: "0px",
+                  }}
+                >
+                  <DeleteIcon />
+                </IconButton>
+                <ListItemText primary={name} />
+                <ListItemSecondaryAction>
+                  <ListItemText>{unitPrice}</ListItemText>
+                </ListItemSecondaryAction>
+              </ListItem>
+            ))
+          ) : (
+            <Typography>
+              Uh oh, looks like we don't have any products right now. Try again
+              soon!
+            </Typography>
+          )}
         </List>
         <Divider />
-        <h3>Total: $PRICE</h3>
+        <h3>{order.total}</h3>
         <Divider />
         <Link
           color="secondary"

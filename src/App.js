@@ -11,9 +11,7 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <header>
           <AppNavbar />
-        </header>
         <Switch>
           <Route exact path="/checkout" component={Checkout} />
           <Route exact path="/sign-in" component={SignInPage} />

@@ -19,7 +19,7 @@
 //     },
 // ]
 
-import React from "react";
+import React, { useEffect } from "react";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
@@ -33,15 +33,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Link from "@material-ui/core/Link";
 
-import { useSelector, useDispatch } from 'react-redux';
-import {
-  decrement,
-  increment,
-  incrementByAmount,
-  incrementAsync,
-  incrementIfOdd,
-  selectCount,
-} from '../features/products/productsSlice';
+import { useSelector, useDispatch } from "react-redux";
+import { getProductsAsync } from "../features/products/productsSlice";
 
 function Copyright() {
   return (
@@ -92,10 +85,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
 export function ProductContainer() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getProductsAsync());
+  }, [dispatch]);
+
+  const { products } = useSelector((state) => state.products);
 
   return (
     <React.Fragment>
@@ -125,8 +123,8 @@ export function ProductContainer() {
         <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            {cards.map((card) => (
-              <Grid item key={card} xs={12} sm={6} md={4}>
+            {products.map(({ data, description, name, id }) => (
+              <Grid item key={id} xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
@@ -135,21 +133,25 @@ export function ProductContainer() {
                   />
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">
-                      Heading
+                      {name}
                     </Typography>
-                    <Typography>
-                      This is a media card. You can use this section to describe
-                      the content.
-                    </Typography>
+                    <Typography>{description}</Typography>
                   </CardContent>
                   <CardActions className={classes.cardActions}>
                     <Button size="medium" color="secondary">
                       View
                     </Button>
-                    <Button size="medium" color="secondary" variant="text">
-                      Add to Cart
-                      <AddShoppingCartIcon />
-                    </Button>
+                    {data === "inStock" ? (
+                      <Button size="medium" color="secondary" variant="text">
+                        Add to Cart
+                        <AddShoppingCartIcon />
+                      </Button>
+                    ) : (
+                      <Button size="medium" color="disabled" variant="text">
+                        Out of Stock
+                        <AddShoppingCartIcon />
+                      </Button>
+                    )}
                   </CardActions>
                 </Card>
               </Grid>

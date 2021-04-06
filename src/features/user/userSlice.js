@@ -1,5 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { GetUser, CreateUser } from './userAPI';
+// import { GetUser, CreateUser } from './userAPI';
+import axios from "axios";
+
+const BASE_URL = "https://fgu03ut8lg.execute-api.us-east-1.amazonaws.com/dev";
 
 const initialState = {
   user: {},
@@ -7,17 +10,17 @@ const initialState = {
 };
 
 export const getUserAsync = createAsyncThunk(
-  'user/getUser',
-  async (email, password) => {
-    const response = await GetUser(email, password);
+  'user/GetUser',
+  async (id) => {
+    const response = await axios.get(`${BASE_URL}/auth/user`, id);
     return response.data;
   }
 );
 
 export const createUserAsync = createAsyncThunk(
-  'user/createUser',
+  'user/CreateUser',
   async (name, email, password) => {
-    const response = await CreateUser(name, email, password);
+    const response = await axios.get(`${BASE_URL}/users`, email, name, password);
     return response.data;
   }
 );

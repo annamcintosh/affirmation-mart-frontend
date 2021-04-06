@@ -1,59 +1,77 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { GetOrder, UpdateOrder, ProcessOrder } from './orderAPI';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+// import { GetOrder, UpdateOrder, PlaceOrder } from './orderAPI';
+import axios from "axios";
+
+const BASE_URL = "https://fgu03ut8lg.execute-api.us-east-1.amazonaws.com/dev";
 
 const initialState = {
-  order: [],
-  status: 'idle',
+  order: {},
+  status: "idle",
 };
 
-export const getOrderAsync = createAsyncThunk(
-  'order/GetOrder',
-  async (email, password) => {
-    const response = await GetOrder(email, password);
+export const getOrderAsync = createAsyncThunk("order/GetOrder", async () => {
+  const response = await axios.get(
+    `${BASE_URL}/order/6fce5ef8-4d25-45c4-9332-1408b7f75d17`
+  );
+  console.log(response.data, response, "ORDERRESPONSE");
+  return response.data;
+});
+
+export const addProductToOrderAsync = createAsyncThunk(
+  "order/AddProductToOrder",
+  async (id, productId) => {
+    const response = await axios.get(`${BASE_URL}/order/add/${id}`, productId);
     return response.data;
   }
 );
 
-export const updateOrderAsync = createAsyncThunk(
-  'order/UpdateOrder',
-  async (id) => {
-    const response = await UpdateOrder(id);
+export const removeProductFromOrderAsync = createAsyncThunk(
+  "order/RemoveProductFromOrder",
+  async (id, productId) => {
+    const response = await axios.get(`${BASE_URL}/order/${id}`, productId);
     return response.data;
   }
 );
 
-export const processOrderAsync = createAsyncThunk(
-  'order/ProcessOrder',
+export const placeOrderAsync = createAsyncThunk(
+  "order/PlaceOrder",
   async (id) => {
-    const response = await ProcessOrder(id);
+    const response = await axios.get(`${BASE_URL}/order/place/${id}`);
     return response.data;
   }
 );
 
 export const orderSlice = createSlice({
-  name: 'order',
+  name: "order",
   initialState,
   extraReducers: (builder) => {
     builder
       .addCase(getOrderAsync.pending, (state) => {
-        state.status = 'loading';
+        state.status = "loading";
       })
       .addCase(getOrderAsync.fulfilled, (state, action) => {
-        state.status = 'idle';
+        state.status = "idle";
         state.order = action.payload;
       })
-      .addCase(updateOrderAsync.pending, (state) => {
-        state.status = 'loading';
+      .addCase(addProductToOrderAsync.pending, (state) => {
+        state.status = "loading";
       })
-      .addCase(updateOrderAsync.fulfilled, (state, action) => {
-        state.status = 'idle';
+      .addCase(addProductToOrderAsync.fulfilled, (state, action) => {
+        state.status = "idle";
         state.order = action.payload;
       })
-      .addCase(processOrderAsync.pending, (state) => {
-        state.status = 'loading';
+      .addCase(removeProductFromOrderAsync.pending, (state) => {
+        state.status = "loading";
       })
-      .addCase(processOrderAsync.fulfilled, (state, action) => {
-        state.status = 'idle';
+      .addCase(removeProductFromOrderAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.order = action.payload;
+      })
+      .addCase(placeOrderAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(placeOrderAsync.fulfilled, (state, action) => {
+        state.status = "idle";
         state.order = action.payload;
       });
   },
