@@ -33,6 +33,16 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Link from "@material-ui/core/Link";
 
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  decrement,
+  increment,
+  incrementByAmount,
+  incrementAsync,
+  incrementIfOdd,
+  selectCount,
+} from '../features/products/productsSlice';
+
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
