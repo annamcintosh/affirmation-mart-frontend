@@ -17,7 +17,7 @@ function Copyright() {
       {"Copyright © Anna McIntosh "}
       {new Date().getFullYear()}
       {" |"}{" "}
-      <Link color="inherit" href="https://material-ui.com/">
+      <Link color="inherit" href="https://github.com/annamcintosh/affirmation-mart-frontend">
         Code for Nerds
       </Link>{" "}
     </Typography>

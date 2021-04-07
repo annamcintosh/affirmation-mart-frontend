@@ -1,24 +1,3 @@
-// const products = [
-//     {
-//         productName: "Star",
-//         details: "This is a star.",
-//         id: "1",
-//         image: ""
-//     },
-//     {
-//         productName: "Square",
-//         details: "This is a square.",
-//         id: "2",
-//         image: ""
-//     },
-//     {
-//         productName: "Circle",
-//         details: "This is a circle.",
-//         id: "3",
-//         image: ""
-//     },
-// ]
-
 import React, { useEffect } from "react";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import Button from "@material-ui/core/Button";
@@ -35,6 +14,7 @@ import Link from "@material-ui/core/Link";
 
 import { useSelector, useDispatch } from "react-redux";
 import { getProductsAsync } from "../features/products/productsSlice";
+import { addProductToOrder } from "../features/order/orderSlice";
 
 function Copyright() {
   return (
@@ -42,7 +22,10 @@ function Copyright() {
       {"Copyright © Anna McIntosh "}
       {new Date().getFullYear()}
       {" |"}{" "}
-      <Link color="inherit" href="https://material-ui.com/">
+      <Link
+        color="inherit"
+        href="https://github.com/annamcintosh/affirmation-mart-frontend"
+      >
         Code for Nerds
       </Link>{" "}
     </Typography>
@@ -95,6 +78,11 @@ export function ProductContainer() {
 
   const { products } = useSelector((state) => state.products);
 
+  const handleAddToCart = (e) => {
+    console.log("You added an item!");
+    dispatch(addProductToOrder(e.target.label));
+  };
+
   return (
     <React.Fragment>
       <CssBaseline />
@@ -118,44 +106,66 @@ export function ProductContainer() {
               This is your premiere shop for daily pick-me-ups. We believe in
               celebrating every victory, no matter how big or small.
             </Typography>
+            <Typography
+              variant="subtitle2"
+              align="center"
+              color="textSecondary"
+              paragraph
+            >
+              Everyone should have access to affirmations, no
+              matter what's in your bank account. So for each order you place, you'll have
+              50 credits to spend. Happy shopping!
+            </Typography>
           </Container>
         </div>
         <Container className={classes.cardGrid} maxWidth="md">
-          {/* End hero unit */}
           <Grid container spacing={4}>
-            {products.map(({ data, description, name, id }) => (
-              <Grid item key={id} xs={12} sm={6} md={4}>
-                <Card className={classes.card}>
-                  <CardMedia
-                    className={classes.cardMedia}
-                    image="https://source.unsplash.com/random"
-                    title="Image title"
-                  />
-                  <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {name}
-                    </Typography>
-                    <Typography>{description}</Typography>
-                  </CardContent>
-                  <CardActions className={classes.cardActions}>
-                    <Button size="medium" color="secondary">
-                      View
-                    </Button>
-                    {data === "inStock" ? (
-                      <Button size="medium" color="secondary" variant="text">
-                        Add to Cart
-                        <AddShoppingCartIcon />
-                      </Button>
-                    ) : (
-                      <Button size="medium" color="disabled" variant="text">
-                        Out of Stock
-                        <AddShoppingCartIcon />
-                      </Button>
-                    )}
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
+            {products ? (
+              products.map(({ data, description, name, unitPrice, id }) => (
+                <Grid item key={id} xs={12} sm={6} md={4}>
+                  <Card className={classes.card}>
+                    <CardMedia
+                      className={classes.cardMedia}
+                      image="https://source.unsplash.com/random"
+                      title="Image title"
+                    />
+                    <CardContent className={classes.cardContent}>
+                      <Typography gutterBottom variant="h5" component="h2">
+                        {name}
+                      </Typography>
+                      <Typography>{description}</Typography>
+                    </CardContent>
+                    <CardActions className={classes.cardActions}>
+                      <Typography variant="button" color="secondary">
+                        {unitPrice} credits
+                      </Typography>
+                      {data === "inStock" ? (
+                        <Button
+                          size="medium"
+                          label={id}
+                          color="secondary"
+                          variant="outlined"
+                          onClick={handleAddToCart}
+                        >
+                          Add to Cart
+                          <AddShoppingCartIcon />
+                        </Button>
+                      ) : (
+                        <Button size="medium" variant="text" disabled>
+                          Out of Stock
+                          <AddShoppingCartIcon />
+                        </Button>
+                      )}
+                    </CardActions>
+                  </Card>
+                </Grid>
+              ))
+            ) : (
+              <Typography>
+                Uh oh, looks like we don't have any products right now. Check
+                back again soon!
+              </Typography>
+            )}
           </Grid>
         </Container>
       </main>

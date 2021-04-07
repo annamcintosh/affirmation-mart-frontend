@@ -7,15 +7,14 @@ export default function PaymentForm() {
   return (
     <React.Fragment>
       <Typography variant="h5" gutterBottom>
-        Payment method
+        Credit Check
       </Typography>
       <Typography variant="h7" gutterBottom>
-        We do things a little differently around here. We believe that everyone
-        should have access to affirmations, no matter what's in your bank
-        account. Every day, you'll start out with 50 credits to spend on
-        affirmations.
+        But not that kind of credit check, you know? Let's make sure you have
+        enough credits to cover your order of affirmations. Don't worry - if you
+        don't have enough right now, you can place another order!
       </Typography>
-      <Divider style={{margin: "15px"}} />
+      <Divider style={{ margin: "15px" }} />
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
           <Typography variant="h7" gutterBottom>
@@ -27,10 +26,11 @@ export default function PaymentForm() {
             Your order total is:
           </Typography>
         </Grid>
-        </Grid>
-        <Typography variant="h6" gutterBottom style={{margin: "15px"}}>
-          You're good to go! Click next to review your order.
-        </Typography>
+      </Grid>
+      <Divider style={{ margin: "15px" }} />
+      <Typography variant="h7" gutterBottom style={{ margin: "15px" }}>
+        You're good to go! Click next to review your order.
+      </Typography>
     </React.Fragment>
   );
 }

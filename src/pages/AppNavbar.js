@@ -18,7 +18,10 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { Box, Link, Typography } from "@material-ui/core";
 
 import { useSelector, useDispatch } from "react-redux";
-import { getOrderAsync } from "../features/order/orderSlice";
+import {
+  getOrderAsync,
+  removeProductFromOrder,
+} from "../features/order/orderSlice";
 
 const drawerWidth = 240;
 
@@ -84,9 +87,9 @@ export function AppNavbar() {
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
 
-  useEffect(() => {
-    dispatch(getOrderAsync());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getOrderAsync());
+  // }, [dispatch]);
 
   const { order } = useSelector((state) => state.order);
 
@@ -96,6 +99,11 @@ export function AppNavbar() {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const handleRemoveFromCart = (e) => {
+    console.log("You removed an item!");
+    dispatch(removeProductFromOrder(e.target.id));
   };
 
   return (
@@ -168,7 +176,7 @@ export function AppNavbar() {
         <List>
           {order.products ? (
             order.products.map(({ productId, name, unitPrice }) => (
-              <ListItem>
+              <ListItem key={productId}>
                 <IconButton
                   edge="end"
                   aria-label="delete"
@@ -177,6 +185,8 @@ export function AppNavbar() {
                     marginRight: "2px",
                     paddingLeft: "0px",
                   }}
+                  id={productId}
+                  onClick={handleRemoveFromCart}
                 >
                   <DeleteIcon />
                 </IconButton>
@@ -187,14 +197,11 @@ export function AppNavbar() {
               </ListItem>
             ))
           ) : (
-            <Typography>
-              Uh oh, looks like we don't have any products right now. Try again
-              soon!
-            </Typography>
+            <Typography>Your shopping cart is empty.</Typography>
           )}
         </List>
         <Divider />
-        <h3>{order.total}</h3>
+        <h3>Total: {order.total}</h3>
         <Divider />
         <Link
           color="secondary"

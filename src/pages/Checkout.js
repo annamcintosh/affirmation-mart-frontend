@@ -21,7 +21,7 @@ function Copyright() {
       {"Copyright © Anna McIntosh "}
       {new Date().getFullYear()}
       {" |"}{" "}
-      <Link color="inherit" href="https://material-ui.com/">
+      <Link color="inherit" href="https://github.com/annamcintosh/affirmation-mart-frontend">
         Code for Nerds
       </Link>{" "}
     </Typography>
@@ -82,13 +82,13 @@ export function Checkout() {
   const [activeStep, setActiveStep] = React.useState(0);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getOrderAsync());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getOrderAsync());
+  // }, [dispatch]);
 
   const { order } = useSelector((state) => state.order);
   const { id } = order;
-  
+
   const handleNext = () => {
     setActiveStep(activeStep + 1);
   };

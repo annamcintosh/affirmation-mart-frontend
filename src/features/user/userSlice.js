@@ -1,48 +1,67 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-// import { GetUser, CreateUser } from './userAPI';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const BASE_URL = "https://fgu03ut8lg.execute-api.us-east-1.amazonaws.com/dev";
 
 const initialState = {
-  user: {},
-  status: 'idle',
+  user: null,
+  isAuthenticated: null,
+  token: localStorage.getItem("token"),
+  status: "idle",
 };
 
-export const getUserAsync = createAsyncThunk(
-  'user/GetUser',
-  async (id) => {
-    const response = await axios.get(`${BASE_URL}/auth/user`, id);
+export const signInAsync = createAsyncThunk(
+  "user/SignIn",
+  async (email, password) => {
+    const response = await axios.get(`${BASE_URL}/auth/user`, {
+      email,
+      password,
+    });
     return response.data;
   }
 );
 
-export const createUserAsync = createAsyncThunk(
-  'user/CreateUser',
+export const signUpAsync = createAsyncThunk(
+  "user/SignUp",
   async (name, email, password) => {
-    const response = await axios.get(`${BASE_URL}/users`, email, name, password);
-    return response.data;
+    return await axios.post(`${BASE_URL}/users`, {
+      name,
+      email,
+      password,
+    });
   }
 );
 
 export const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
+  reducers: {
+    logout: (state) => {
+      localStorage.removeItem("token");
+      state.status = "idle";
+      state.user = null;
+      state.isAuthenticated = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
-      .addCase(getUserAsync.pending, (state) => {
-        state.status = 'loading';
+      .addCase(signInAsync.pending, (state) => {
+        state.status = "loading";
       })
-      .addCase(getUserAsync.fulfilled, (state, action) => {
-        state.status = 'idle';
+      .addCase(signInAsync.fulfilled, (state, action) => {
+        localStorage.setItem("token", action.payload.token);
+        state.status = "idle";
         state.user = action.payload;
+        state.isAuthenticated = true;
       })
-      .addCase(createUserAsync.pending, (state) => {
-        state.status = 'loading';
+      .addCase(signUpAsync.pending, (state) => {
+        state.status = "loading";
       })
-      .addCase(createUserAsync.fulfilled, (state, action) => {
-        state.status = 'idle';
+      .addCase(signUpAsync.fulfilled, (state, action) => {
+        localStorage.setItem("token", action.payload.token);
+        state.status = "idle";
         state.user = action.payload;
+        state.isAuthenticated = true;
       });
   },
 });

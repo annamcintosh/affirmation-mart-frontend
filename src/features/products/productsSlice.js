@@ -14,7 +14,6 @@ export const getProductsAsync = createAsyncThunk(
   "products/GetProducts",
   async () => {
     const response = await axios.get(`${BASE_URL}/products`);
-    console.log(response.data, response, "RESPONSE");
     return response.data;
   }
 );
@@ -23,7 +22,6 @@ export const getProductAsync = createAsyncThunk(
   "products/GetProduct",
   async (id) => {
     const response = await axios.get(`${BASE_URL}/product/${id}`);
-    console.log(response, "RESPONSE");
     return response.data;
   }
 );

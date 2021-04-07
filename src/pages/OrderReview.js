@@ -39,9 +39,9 @@ export default function OrderReview() {
   const classes = useStyles();
   const dispatch = useDispatch();
   
-  useEffect(() => {
-    dispatch(getOrderAsync());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getOrderAsync());
+  // }, [dispatch]);
 
   const { order } = useSelector((state) => state.order);
   const { products, total } = order;
