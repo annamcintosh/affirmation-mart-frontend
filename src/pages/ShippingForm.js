@@ -10,7 +10,7 @@ export default function ShippingForm() {
         Delivery Instructions
       </Typography>
       <Typography variant="h7" gutterBottom>
-        Your order of affirmations will be emailed to you at the address you enter below.
+        Your order of affirmations will be emailed to you at the address tied to your account.
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12}>

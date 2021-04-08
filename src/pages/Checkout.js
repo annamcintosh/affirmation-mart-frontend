@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Paper from "@material-ui/core/Paper";
@@ -21,7 +21,10 @@ function Copyright() {
       {"Copyright © Anna McIntosh "}
       {new Date().getFullYear()}
       {" |"}{" "}
-      <Link color="inherit" href="https://github.com/annamcintosh/affirmation-mart-frontend">
+      <Link
+        color="inherit"
+        href="https://github.com/annamcintosh/affirmation-mart-frontend"
+      >
         Code for Nerds
       </Link>{" "}
     </Typography>
@@ -82,9 +85,9 @@ export function Checkout() {
   const [activeStep, setActiveStep] = React.useState(0);
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   dispatch(getOrderAsync());
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(getOrderAsync("lovetosing94al@gmail.com"));
+  }, [dispatch]);
 
   const { order } = useSelector((state) => state.order);
   const { id } = order;

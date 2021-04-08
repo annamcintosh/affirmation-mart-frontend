@@ -14,7 +14,7 @@ import Link from "@material-ui/core/Link";
 
 import { useSelector, useDispatch } from "react-redux";
 import { getProductsAsync } from "../features/products/productsSlice";
-import { addProductToOrder } from "../features/order/orderSlice";
+import { addProductToOrderAsync } from "../features/order/orderSlice";
 
 function Copyright() {
   return (
@@ -77,10 +77,11 @@ export function ProductContainer() {
   }, [dispatch]);
 
   const { products } = useSelector((state) => state.products);
+  // const orderId = { id: "c75820f2-4d41-4e45-b25b-cefedc2b44c7" };
 
-  const handleAddToCart = (e) => {
-    console.log("You added an item!");
-    dispatch(addProductToOrder(e.target.label));
+  const handleAddToCart = (id, name, unitPrice) => {
+    console.log("You added an item!", { id, name, unitPrice });
+    dispatch(addProductToOrderAsync({ id, name, unitPrice }));
   };
 
   return (
@@ -112,9 +113,8 @@ export function ProductContainer() {
               color="textSecondary"
               paragraph
             >
-              Everyone should have access to affirmations, no
-              matter what's in your bank account. So for each order you place, you'll have
-              50 credits to spend. Happy shopping!
+              Everyone should have access to affirmations, so for each order you
+              place, you'll have 50 credits to spend. Happy shopping!
             </Typography>
           </Container>
         </div>
@@ -145,7 +145,7 @@ export function ProductContainer() {
                           label={id}
                           color="secondary"
                           variant="outlined"
-                          onClick={handleAddToCart}
+                          onClick={() => handleAddToCart(id, name, unitPrice)}
                         >
                           Add to Cart
                           <AddShoppingCartIcon />

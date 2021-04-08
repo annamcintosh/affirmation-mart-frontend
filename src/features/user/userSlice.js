@@ -10,6 +10,13 @@ const initialState = {
   status: "idle",
 };
 
+export const loadUserAsync = createAsyncThunk("user/loadUser", async (id) => {
+  const response = await axios.get(`${BASE_URL}/auth/user`, {
+    id,
+  });
+  return response.data;
+});
+
 export const signInAsync = createAsyncThunk(
   "user/SignIn",
   async (email, password) => {
@@ -45,6 +52,14 @@ export const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(loadUserAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(loadUserAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.user = action.payload;
+        state.isAuthenticated = true;
+      })
       .addCase(signInAsync.pending, (state) => {
         state.status = "loading";
       })
@@ -65,5 +80,7 @@ export const userSlice = createSlice({
       });
   },
 });
+
+export const { logout } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -15,13 +15,14 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { Box, Link, Typography } from "@material-ui/core";
+import { Box, Button, Link, Typography } from "@material-ui/core";
 
 import { useSelector, useDispatch } from "react-redux";
 import {
   getOrderAsync,
-  removeProductFromOrder,
+  removeProductFromOrderAsync,
 } from "../features/order/orderSlice";
+import { logout } from "../features/user/userSlice";
 
 const drawerWidth = 240;
 
@@ -85,13 +86,14 @@ export function AppNavbar() {
   const classes = useStyles();
   const theme = useTheme();
   const dispatch = useDispatch();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
-  // useEffect(() => {
-  //   dispatch(getOrderAsync());
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(getOrderAsync("lovetosing94al@gmail.luv"));
+  }, [dispatch]);
 
   const { order } = useSelector((state) => state.order);
+  const { user } = useSelector((state) => state.user);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -101,9 +103,9 @@ export function AppNavbar() {
     setOpen(false);
   };
 
-  const handleRemoveFromCart = (e) => {
-    console.log("You removed an item!");
-    dispatch(removeProductFromOrder(e.target.id));
+  const handleRemoveFromCart = (productId, unitPrice) => {
+    console.log("You removed an item!", { productId, unitPrice });
+    dispatch(removeProductFromOrderAsync({ productId, unitPrice }));
   };
 
   return (
@@ -117,9 +119,15 @@ export function AppNavbar() {
         })}
       >
         <Toolbar>
-          <Link href="/sign-in" color="secondary">
-            Sign In
-          </Link>
+          {user ? (
+            <Button color="secondary" onClick={dispatch(logout())}>
+              Sign Out
+            </Button>
+          ) : (
+            <Link href="/sign-in" color="secondary">
+              Sign In
+            </Link>
+          )}
           <Link
             variant="h4"
             color="secondary"
@@ -186,7 +194,7 @@ export function AppNavbar() {
                     paddingLeft: "0px",
                   }}
                   id={productId}
-                  onClick={handleRemoveFromCart}
+                  onClick={() => handleRemoveFromCart(productId, unitPrice)}
                 >
                   <DeleteIcon />
                 </IconButton>

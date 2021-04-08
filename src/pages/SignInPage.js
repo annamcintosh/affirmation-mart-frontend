@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useSelector } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -17,7 +17,10 @@ function Copyright() {
       {"Copyright © Anna McIntosh "}
       {new Date().getFullYear()}
       {" |"}{" "}
-      <Link color="inherit" href="https://github.com/annamcintosh/affirmation-mart-frontend">
+      <Link
+        color="inherit"
+        href="https://github.com/annamcintosh/affirmation-mart-frontend"
+      >
         Code for Nerds
       </Link>{" "}
     </Typography>
@@ -36,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: "100%",
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -46,6 +49,11 @@ const useStyles = makeStyles((theme) => ({
 
 export function SignInPage() {
   const classes = useStyles();
+
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+
+  const { user } = useSelector((state) => state.user);
 
   return (
     <Container component="main" maxWidth="xs">
