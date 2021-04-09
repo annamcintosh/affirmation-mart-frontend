@@ -15,12 +15,14 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { Box, Button, Link, Typography } from "@material-ui/core";
+import { Box, Button, Typography } from "@material-ui/core";
+import { Link } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
 import {
   getOrderAsync,
   removeProductFromOrderAsync,
+  clearOrder,
 } from "../features/order/orderSlice";
 import { logout } from "../features/user/userSlice";
 
@@ -87,13 +89,12 @@ export function AppNavbar() {
   const theme = useTheme();
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
+  const { user } = useSelector((state) => state.user);
+  const { order } = useSelector((state) => state.order);
 
   useEffect(() => {
-    dispatch(getOrderAsync("lovetosing94al@gmail.luv"));
-  }, [dispatch]);
-
-  const { order } = useSelector((state) => state.order);
-  const { user } = useSelector((state) => state.user);
+    dispatch(getOrderAsync({ user }));
+  }, [dispatch, user]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -104,8 +105,12 @@ export function AppNavbar() {
   };
 
   const handleRemoveFromCart = (productId, unitPrice) => {
-    console.log("You removed an item!", { productId, unitPrice });
-    dispatch(removeProductFromOrderAsync({ productId, unitPrice }));
+    dispatch(removeProductFromOrderAsync({ user, productId, unitPrice }));
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    dispatch(clearOrder());
   };
 
   return (
@@ -120,11 +125,15 @@ export function AppNavbar() {
       >
         <Toolbar>
           {user ? (
-            <Button color="secondary" onClick={dispatch(logout())}>
+            <Button color="secondary" onClick={handleLogout}>
               Sign Out
             </Button>
           ) : (
-            <Link href="/sign-in" color="secondary">
+            <Link
+              to="/sign-in"
+              color="secondary"
+              style={{ textDecoration: "none" }}
+            >
               Sign In
             </Link>
           )}
@@ -133,7 +142,7 @@ export function AppNavbar() {
             color="secondary"
             noWrap
             className={classes.title}
-            href="/"
+            to="/"
             style={{
               fontSize: "1.5rem",
               textDecoration: "none",
@@ -204,26 +213,33 @@ export function AppNavbar() {
                 </ListItemSecondaryAction>
               </ListItem>
             ))
-          ) : (
+          ) : user ? (
             <Typography>Your shopping cart is empty.</Typography>
+          ) : (
+            <Typography>Sign up or sign in to get started!</Typography>
           )}
         </List>
-        <Divider />
-        <h3>Total: {order.total}</h3>
-        <Divider />
-        <Link
-          color="secondary"
-          variant="button"
-          href="/checkout"
-          aria-label="checkout order"
-          size="large"
-          style={{
-            padding: "6px",
-            fontSize: "1.2rem",
-          }}
-        >
-          Checkout
-        </Link>
+        {user ? (
+          <Box>
+            <Divider />
+            <h3>Total: {order.total}</h3>
+            <Divider />
+            <Link
+              color="secondary"
+              variant="button"
+              to="/checkout"
+              aria-label="checkout order"
+              size="large"
+              style={{
+                padding: "6px",
+                fontSize: "1.2rem",
+                textDecoration: "none",
+              }}
+            >
+              Checkout
+            </Link>{" "}
+          </Box>
+        ) : null}
       </Drawer>
     </Box>
   );

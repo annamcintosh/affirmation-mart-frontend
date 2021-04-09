@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import { ProductContainer } from "./pages/ProductContainer";
 import { Checkout } from "./pages/Checkout";
 import "./App.css";
@@ -7,7 +7,7 @@ import { AppNavbar } from "./pages/AppNavbar";
 import { SignInPage } from "./pages/SignInPage";
 import { SignUpPage } from "./pages/SignUpPage";
 import { useDispatch } from "react-redux";
-import { loadUserAsync } from './features/user/userSlice';
+import { loadUserAsync } from "./features/user/userSlice";
 
 function App() {
   const dispatch = useDispatch();
@@ -19,12 +19,13 @@ function App() {
   return (
     <div className="App">
       <Router>
-          <AppNavbar />
+        <AppNavbar />
         <Switch>
-          <Route exact path="/checkout" component={Checkout} />
-          <Route exact path="/sign-in" component={SignInPage} />
-          <Route exact path="/sign-up" component={SignUpPage} />
-          <Route exact path="/" component={ProductContainer} />
+          <Route exact path="/checkout" render={() => <Checkout />} />
+          <Route exact path="/sign-in" render={() => <SignInPage />} />
+          <Route exact path="/sign-up" render={() => <SignUpPage />} />
+          <Route exact path="/" render={() => <ProductContainer />} />
+          <Redirect to="/" />
         </Switch>
       </Router>
     </div>

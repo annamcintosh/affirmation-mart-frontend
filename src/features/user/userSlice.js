@@ -6,7 +6,6 @@ const BASE_URL = "https://fgu03ut8lg.execute-api.us-east-1.amazonaws.com/dev";
 const initialState = {
   user: null,
   isAuthenticated: null,
-  token: localStorage.getItem("token"),
   status: "idle",
 };
 
@@ -19,18 +18,17 @@ export const loadUserAsync = createAsyncThunk("user/loadUser", async (id) => {
 
 export const signInAsync = createAsyncThunk(
   "user/SignIn",
-  async (email, password) => {
-    const response = await axios.get(`${BASE_URL}/auth/user`, {
+  async ({ email, password }) => {
+    return await axios.post(`${BASE_URL}/auth`, {
       email,
       password,
     });
-    return response.data;
   }
 );
 
 export const signUpAsync = createAsyncThunk(
   "user/SignUp",
-  async (name, email, password) => {
+  async ({ name, email, password }) => {
     return await axios.post(`${BASE_URL}/users`, {
       name,
       email,
@@ -44,7 +42,6 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      localStorage.removeItem("token");
       state.status = "idle";
       state.user = null;
       state.isAuthenticated = null;
@@ -64,7 +61,6 @@ export const userSlice = createSlice({
         state.status = "loading";
       })
       .addCase(signInAsync.fulfilled, (state, action) => {
-        localStorage.setItem("token", action.payload.token);
         state.status = "idle";
         state.user = action.payload;
         state.isAuthenticated = true;
@@ -73,7 +69,6 @@ export const userSlice = createSlice({
         state.status = "loading";
       })
       .addCase(signUpAsync.fulfilled, (state, action) => {
-        localStorage.setItem("token", action.payload.token);
         state.status = "idle";
         state.user = action.payload;
         state.isAuthenticated = true;

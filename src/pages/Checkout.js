@@ -13,7 +13,7 @@ import PaymentForm from "./PaymentForm";
 import OrderReview from "./OrderReview";
 import { Box } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
-import { getOrderAsync } from "../features/order/orderSlice";
+import { getOrderAsync, clearOrder } from "../features/order/orderSlice";
 
 function Copyright() {
   return (
@@ -84,13 +84,12 @@ export function Checkout() {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
+  const { order } = useSelector((state) => state.order);
 
   useEffect(() => {
-    dispatch(getOrderAsync("lovetosing94al@gmail.com"));
-  }, [dispatch]);
-
-  const { order } = useSelector((state) => state.order);
-  const { id } = order;
+    dispatch(getOrderAsync({ user }));
+  }, [dispatch, user]);
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
@@ -98,6 +97,11 @@ export function Checkout() {
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
+  };
+
+  const handlePlaceOrder = () => {
+    dispatch(clearOrder());
+    setActiveStep(activeStep + 1);
   };
 
   return (
@@ -122,7 +126,7 @@ export function Checkout() {
                   Thank you for your order!
                 </Typography>
                 <Typography variant="subtitle1">
-                  Your order number is #{id}. We have emailed your order
+                  Your order number is #{order.id}. We have emailed your order
                   confirmation, and your order will be on its way soon!
                 </Typography>
               </React.Fragment>
@@ -135,14 +139,35 @@ export function Checkout() {
                       Back
                     </Button>
                   )}
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={handleNext}
-                    className={classes.button}
-                  >
-                    {activeStep === steps.length - 1 ? "Place order" : "Next"}
-                  </Button>
+                  {activeStep !== 0 && order.total > 50 ? (
+                    <Button
+                      variant="contained"
+                      disabled
+                      color="secondary"
+                      onClick={handleNext}
+                      className={classes.button}
+                    >
+                      Next
+                    </Button>
+                  ) : activeStep === 2 ? (
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={handlePlaceOrder}
+                      className={classes.button}
+                    >
+                      Place Order
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={handleNext}
+                      className={classes.button}
+                    >
+                      Next
+                    </Button>
+                  )}
                 </Box>
               </React.Fragment>
             )}

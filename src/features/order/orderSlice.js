@@ -9,36 +9,37 @@ const initialState = {
   status: "idle",
 };
 
-export const getOrderAsync = createAsyncThunk("order/GetOrder", async (id) => {
-  const response = await axios.get(`${BASE_URL}/order/user/${id}`);
-  return response.data;
-});
+export const getOrderAsync = createAsyncThunk(
+  "order/GetOrder",
+  async ({ user }) => {
+    const userId = user.data.id;
+    console.log(userId);
+    const response = await axios.get(`${BASE_URL}/order/user/${userId}`);
+    return response.data;
+  }
+);
 
 export const addProductToOrderAsync = createAsyncThunk(
   "order/AddProductToOrder",
-  async ({ name, unitPrice, id }) => {
-    const response = await axios.patch(
-      `${BASE_URL}/order/add/c75820f2-4d41-4e45-b25b-cefedc2b44c7`,
-      {
-        id,
-        name,
-        unitPrice,
-      }
-    );
+  async ({ user, name, unitPrice, id }) => {
+    const orderId = user.data.shoppingOrder;
+    const response = await axios.patch(`${BASE_URL}/order/add/${orderId}`, {
+      id,
+      name,
+      unitPrice,
+    });
     return response.data;
   }
 );
 
 export const removeProductFromOrderAsync = createAsyncThunk(
   "order/RemoveProductFromOrder",
-  async ({ unitPrice, productId }) => {
-    const response = await axios.patch(
-      `${BASE_URL}/order/remove/c75820f2-4d41-4e45-b25b-cefedc2b44c7`,
-      {
-        productId,
-        unitPrice,
-      }
-    );
+  async ({ user, unitPrice, productId }) => {
+    const orderId = user.data.shoppingOrder;
+    const response = await axios.patch(`${BASE_URL}/order/remove/${orderId}`, {
+      productId,
+      unitPrice,
+    });
     return response.data;
   }
 );
@@ -54,6 +55,12 @@ export const placeOrderAsync = createAsyncThunk(
 export const orderSlice = createSlice({
   name: "order",
   initialState,
+  reducers: {
+    clearOrder: (state) => {
+      state.status = "idle";
+      state.order = {};
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getOrderAsync.pending, (state) => {
@@ -86,5 +93,7 @@ export const orderSlice = createSlice({
       });
   },
 });
+
+export const { clearOrder } = orderSlice.actions;
 
 export default orderSlice.reducer;

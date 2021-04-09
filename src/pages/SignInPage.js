@@ -1,4 +1,4 @@
-import React, { useState, useSelector } from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -10,6 +10,9 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { signInAsync } from "../features/user/userSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 function Copyright() {
   return (
@@ -49,11 +52,28 @@ const useStyles = makeStyles((theme) => ({
 
 export function SignInPage() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
-  const { user } = useSelector((state) => state.user);
+  const onChangeEmail = (e) => {
+    const email = e.target.value;
+    setEmail(email);
+  };
+
+  const onChangePassword = (e) => {
+    const password = e.target.value;
+    setPassword(password);
+  };
+
+  const handleSignIn = (e) => {
+    e.preventDefault();
+    console.log("You hit submit!", email, password);
+    dispatch(signInAsync({ email, password }));
+    history.push("/");
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -63,9 +83,13 @@ export function SignInPage() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Welcome, friend! Sign in below.
+          Welcome back! Sign in below.
         </Typography>
-        <form className={classes.form} noValidate>
+        <form
+          className={classes.form}
+          noValidate
+          onSubmit={(e) => handleSignIn(e)}
+        >
           <TextField
             variant="outlined"
             margin="normal"
@@ -76,6 +100,7 @@ export function SignInPage() {
             name="email"
             autoComplete="email"
             autoFocus
+            onChange={onChangeEmail}
           />
           <TextField
             variant="outlined"
@@ -87,6 +112,7 @@ export function SignInPage() {
             type="password"
             id="password"
             autoComplete="current-password"
+            onChange={onChangePassword}
           />
           <Button
             type="submit"

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -10,6 +10,9 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { signUpAsync } from "../features/user/userSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { Redirect } from "react-router";
 
 function Copyright() {
   return (
@@ -17,7 +20,10 @@ function Copyright() {
       {"Copyright © Anna McIntosh "}
       {new Date().getFullYear()}
       {" |"}{" "}
-      <Link color="inherit" href="https://github.com/annamcintosh/affirmation-mart-frontend">
+      <Link
+        color="inherit"
+        href="https://github.com/annamcintosh/affirmation-mart-frontend"
+      >
         Code for Nerds
       </Link>{" "}
     </Typography>
@@ -46,6 +52,35 @@ const useStyles = makeStyles((theme) => ({
 
 export function SignUpPage() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
+  const [name, setName] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+
+  // const { user } = useSelector((state) => state.user);
+
+  const onChangeName = (e) => {
+    const name = e.target.value;
+    setName(name);
+  };
+
+  const onChangeEmail = (e) => {
+    const email = e.target.value;
+    setEmail(email);
+  };
+
+  const onChangePassword = (e) => {
+    const password = e.target.value;
+    setPassword(password);
+  };
+
+  const handleSignUp = (e) => {
+    e.preventDefault();
+    console.log("You hit submit!", name, email, password);
+    dispatch(signUpAsync({ name, email, password }));
+    return <Redirect to="/" />;
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -57,9 +92,13 @@ export function SignUpPage() {
         <Typography component="h1" variant="h5">
           Howdy, Stranger! Sign up below.
         </Typography>
-        <form className={classes.form} noValidate>
+        <form
+          className={classes.form}
+          noValidate
+          onSubmit={(e) => handleSignUp(e)}
+        >
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
                 autoComplete="name"
                 name="name"
@@ -69,6 +108,7 @@ export function SignUpPage() {
                 id="name"
                 label="Name"
                 autoFocus
+                onChange={onChangeName}
               />
             </Grid>
             <Grid item xs={12}>
@@ -80,6 +120,7 @@ export function SignUpPage() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                onChange={onChangeEmail}
               />
             </Grid>
             <Grid item xs={12}>
@@ -92,6 +133,7 @@ export function SignUpPage() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={onChangePassword}
               />
             </Grid>
           </Grid>
