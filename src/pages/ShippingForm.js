@@ -19,7 +19,7 @@ export default function ShippingForm() {
       </Typography>
       <Divider style={{ margin: "10px" }} />
       <Typography variant="h7" gutterBottom>
-        {user.data.id}
+        {user.id}
       </Typography>
       <Divider style={{ margin: "10px" }} />
       {/* <Grid container spacing={3}>

@@ -12,32 +12,53 @@ const initialState = {
 export const loadUserAsync = createAsyncThunk(
   "user/loadUser",
   async ({ user }) => {
-    const id = user.data.id;
-    console.log("GETUSER", id);
-    return await axios.get(`${BASE_URL}/auth/user`, {
+    const id = user.id;
+    const response = await axios.post(`${BASE_URL}/auth/user`, {
       id,
     });
+    return response.data;
   }
 );
 
 export const signInAsync = createAsyncThunk(
   "user/SignIn",
   async ({ email, password }) => {
-    return await axios.get(`${BASE_URL}/auth`, {
+    const response = await axios.post(`${BASE_URL}/auth`, {
       email,
       password,
     });
+    return response.data;
   }
 );
 
 export const signUpAsync = createAsyncThunk(
   "user/SignUp",
   async ({ name, email, password }) => {
-    return await axios.post(`${BASE_URL}/users`, {
+    const response = await axios.post(`${BASE_URL}/users`, {
       name,
       email,
       password,
     });
+    return response.data;
+  }
+);
+
+export const placeOrderAsync = createAsyncThunk(
+  "order/PlaceOrder",
+  async ({ user }) => {
+    const orderId = user.shoppingOrder;
+    const userId = user.id;
+    const response = await axios.patch(`${BASE_URL}/order/place/${orderId}`, {
+      userId,
+    });
+    console.log(response.data);
+    const newResponse = {
+      id: response.data.id,
+      name: response.data.data,
+      shoppingOrder: response.data.shoppingOrder,
+    };
+    console.log(newResponse);
+    return newResponse;
   }
 );
 
@@ -76,6 +97,13 @@ export const userSlice = createSlice({
         state.status = "idle";
         state.user = action.payload;
         state.isAuthenticated = true;
+      })
+      .addCase(placeOrderAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(placeOrderAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.user = action.payload;
       });
   },
 });

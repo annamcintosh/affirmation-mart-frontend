@@ -13,11 +13,8 @@ import PaymentForm from "./PaymentForm";
 import OrderReview from "./OrderReview";
 import { Box } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  getOrderAsync,
-  clearOrder,
-  placeOrderAsync,
-} from "../features/order/orderSlice";
+import { getOrderAsync } from "../features/order/orderSlice";
+import { placeOrderAsync } from "../features/user/userSlice";
 
 function Copyright() {
   return (
@@ -108,80 +105,87 @@ export function Checkout() {
     setPlacedOrder(order.id);
     await setActiveStep(activeStep + 1);
     await dispatch(placeOrderAsync({ user }));
-    // dispatch(clearOrder());
   }
 
   return (
     <React.Fragment>
       <CssBaseline />
-      <Box className={classes.layout}>
-        <Paper className={classes.paper}>
-          <Typography component="h1" variant="h4" align="center">
-            Checkout
-          </Typography>
-          <Stepper activeStep={activeStep} className={classes.stepper}>
-            {steps.map((label) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-          <React.Fragment>
-            {activeStep === steps.length ? (
-              <React.Fragment>
-                <Typography variant="h5" gutterBottom>
-                  Thank you for your order!
-                </Typography>
-                <Typography variant="subtitle1">
-                  Your order number is #{placedOrder}. We have emailed your
-                  order confirmation, and your order will be on its way soon!
-                </Typography>
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                {getStepContent(activeStep)}
-                <Box className={classes.buttons}>
-                  {activeStep !== 0 && (
-                    <Button onClick={handleBack} className={classes.button}>
-                      Back
-                    </Button>
-                  )}
-                  {activeStep !== 0 && order.total > 50 ? (
-                    <Button
-                      variant="contained"
-                      disabled
-                      color="secondary"
-                      onClick={handleNext}
-                      className={classes.button}
-                    >
-                      Next
-                    </Button>
-                  ) : activeStep === 2 ? (
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      onClick={handlePlaceOrder}
-                      className={classes.button}
-                    >
-                      Place Order
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      onClick={handleNext}
-                      className={classes.button}
-                    >
-                      Next
-                    </Button>
-                  )}
-                </Box>
-              </React.Fragment>
-            )}
-          </React.Fragment>
-        </Paper>
-        <Copyright />
-      </Box>
+      {user ? (
+        <Box className={classes.layout}>
+          <Paper className={classes.paper}>
+            <Typography component="h1" variant="h4" align="center">
+              Checkout
+            </Typography>
+            <Stepper activeStep={activeStep} className={classes.stepper}>
+              {steps.map((label) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+            <React.Fragment>
+              {activeStep === steps.length ? (
+                <React.Fragment>
+                  <Typography variant="h5" gutterBottom>
+                    Thank you for your order!
+                  </Typography>
+                  <Typography variant="subtitle1">
+                    Your order number is #{placedOrder}. We have emailed your
+                    order confirmation, and your order will be on its way soon!
+                  </Typography>
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  {getStepContent(activeStep)}
+                  <Box className={classes.buttons}>
+                    {activeStep !== 0 && (
+                      <Button onClick={handleBack} className={classes.button}>
+                        Back
+                      </Button>
+                    )}
+                    {activeStep !== 0 && order.total > 50 ? (
+                      <Button
+                        variant="contained"
+                        disabled
+                        color="secondary"
+                        onClick={handleNext}
+                        className={classes.button}
+                      >
+                        Next
+                      </Button>
+                    ) : activeStep === 2 ? (
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={handlePlaceOrder}
+                        className={classes.button}
+                      >
+                        Place Order
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={handleNext}
+                        className={classes.button}
+                      >
+                        Next
+                      </Button>
+                    )}
+                  </Box>
+                </React.Fragment>
+              )}
+            </React.Fragment>
+          </Paper>
+          <Copyright />
+        </Box>
+      ) : (
+        <Typography>
+          Well this is a suprise. You found the checkout without being logged
+          in! Very clever and/or sneaky of you. Head back to the homepage to
+          sign up or sign in.
+        </Typography>
+      )}
     </React.Fragment>
   );
 }

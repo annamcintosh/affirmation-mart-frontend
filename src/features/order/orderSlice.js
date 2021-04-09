@@ -12,7 +12,7 @@ const initialState = {
 export const getOrderAsync = createAsyncThunk(
   "order/GetOrder",
   async ({ user }) => {
-    const userId = user.data.id;
+    const userId = user.id;
     const response = await axios.get(`${BASE_URL}/order/user/${userId}`);
     return response.data;
   }
@@ -21,7 +21,7 @@ export const getOrderAsync = createAsyncThunk(
 export const addProductToOrderAsync = createAsyncThunk(
   "order/AddProductToOrder",
   async ({ user, name, unitPrice, id }) => {
-    const orderId = user.data.shoppingOrder;
+    const orderId = user.shoppingOrder;
     const response = await axios.patch(`${BASE_URL}/order/add/${orderId}`, {
       id,
       name,
@@ -34,23 +34,10 @@ export const addProductToOrderAsync = createAsyncThunk(
 export const removeProductFromOrderAsync = createAsyncThunk(
   "order/RemoveProductFromOrder",
   async ({ user, unitPrice, productId }) => {
-    const orderId = user.data.shoppingOrder;
+    const orderId = user.shoppingOrder;
     const response = await axios.patch(`${BASE_URL}/order/remove/${orderId}`, {
       productId,
       unitPrice,
-    });
-    return response.data;
-  }
-);
-
-export const placeOrderAsync = createAsyncThunk(
-  "order/PlaceOrder",
-  async ({ user }) => {
-    const orderId = user.data.shoppingOrder;
-    const userId = user.data.id;
-    console.log("You placed an order", orderId, userId);
-    const response = await axios.patch(`${BASE_URL}/order/place/${orderId}`, {
-      userId,
     });
     return response.data;
   }
@@ -87,13 +74,6 @@ export const orderSlice = createSlice({
       .addCase(removeProductFromOrderAsync.fulfilled, (state, action) => {
         state.status = "idle";
         state.order = action.payload;
-      })
-      .addCase(placeOrderAsync.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(placeOrderAsync.fulfilled, (state, action) => {
-        state.status = "idle";
-        // state.user = action.payload;
       });
   },
 });

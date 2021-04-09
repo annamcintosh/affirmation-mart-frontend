@@ -39,7 +39,8 @@ export default function PaymentForm() {
         </Typography>
       ) : (
         <Typography variant="h7" gutterBottom style={{ margin: "15px" }}>
-          Uh oh, looks like you have too many items in your cart right now. Remember, you can break this order into smaller orders.
+          Uh oh, looks like you have too many items in your cart right now.
+          Remember, you can break this order into smaller orders.
         </Typography>
       )}
     </React.Fragment>
