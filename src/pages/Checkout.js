@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Paper from "@material-ui/core/Paper";
@@ -13,7 +13,11 @@ import PaymentForm from "./PaymentForm";
 import OrderReview from "./OrderReview";
 import { Box } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
-import { getOrderAsync, clearOrder } from "../features/order/orderSlice";
+import {
+  getOrderAsync,
+  clearOrder,
+  placeOrderAsync,
+} from "../features/order/orderSlice";
 
 function Copyright() {
   return (
@@ -82,7 +86,8 @@ function getStepContent(step) {
 
 export function Checkout() {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = useState(0);
+  const [placedOrder, setPlacedOrder] = useState();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { order } = useSelector((state) => state.order);
@@ -99,10 +104,12 @@ export function Checkout() {
     setActiveStep(activeStep - 1);
   };
 
-  const handlePlaceOrder = () => {
+  async function handlePlaceOrder() {
+    setPlacedOrder(order.id);
+    await setActiveStep(activeStep + 1);
+    await dispatch(placeOrderAsync({ user }));
     dispatch(clearOrder());
-    setActiveStep(activeStep + 1);
-  };
+  }
 
   return (
     <React.Fragment>
@@ -126,8 +133,8 @@ export function Checkout() {
                   Thank you for your order!
                 </Typography>
                 <Typography variant="subtitle1">
-                  Your order number is #{order.id}. We have emailed your order
-                  confirmation, and your order will be on its way soon!
+                  Your order number is #{placedOrder}. We have emailed your
+                  order confirmation, and your order will be on its way soon!
                 </Typography>
               </React.Fragment>
             ) : (

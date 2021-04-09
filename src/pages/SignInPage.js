@@ -70,7 +70,6 @@ export function SignInPage() {
 
   const handleSignIn = (e) => {
     e.preventDefault();
-    console.log("You hit submit!", email, password);
     dispatch(signInAsync({ email, password }));
     history.push("/");
   };

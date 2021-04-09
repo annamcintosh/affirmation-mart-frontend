@@ -36,6 +36,7 @@ export const removeProductFromOrderAsync = createAsyncThunk(
   "order/RemoveProductFromOrder",
   async ({ user, unitPrice, productId }) => {
     const orderId = user.data.shoppingOrder;
+    console.log(orderId)
     const response = await axios.patch(`${BASE_URL}/order/remove/${orderId}`, {
       productId,
       unitPrice,
@@ -46,8 +47,13 @@ export const removeProductFromOrderAsync = createAsyncThunk(
 
 export const placeOrderAsync = createAsyncThunk(
   "order/PlaceOrder",
-  async (id) => {
-    const response = await axios.get(`${BASE_URL}/order/place/${id}`);
+  async ({ user }) => {
+    const orderId = user.data.shoppingOrder;
+    const userId = user.data.id;
+    console.log("You placed an order", orderId, userId);
+    const response = await axios.patch(`${BASE_URL}/order/place/${orderId}`, {
+      userId,
+    });
     return response.data;
   }
 );

@@ -140,7 +140,6 @@ export function AppNavbar() {
           <Link
             variant="h4"
             color="secondary"
-            noWrap
             className={classes.title}
             to="/"
             style={{
@@ -230,6 +229,7 @@ export function AppNavbar() {
               to="/checkout"
               aria-label="checkout order"
               size="large"
+              onClick={handleDrawerClose}
               style={{
                 padding: "6px",
                 fontSize: "1.2rem",
