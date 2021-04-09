@@ -9,17 +9,21 @@ const initialState = {
   status: "idle",
 };
 
-export const loadUserAsync = createAsyncThunk("user/loadUser", async (id) => {
-  const response = await axios.get(`${BASE_URL}/auth/user`, {
-    id,
-  });
-  return response.data;
-});
+export const loadUserAsync = createAsyncThunk(
+  "user/loadUser",
+  async ({ user }) => {
+    const id = user.data.id;
+    console.log("GETUSER", id);
+    return await axios.get(`${BASE_URL}/auth/user`, {
+      id,
+    });
+  }
+);
 
 export const signInAsync = createAsyncThunk(
   "user/SignIn",
   async ({ email, password }) => {
-    return await axios.post(`${BASE_URL}/auth`, {
+    return await axios.get(`${BASE_URL}/auth`, {
       email,
       password,
     });

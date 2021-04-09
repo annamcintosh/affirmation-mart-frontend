@@ -12,7 +12,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { signUpAsync } from "../features/user/userSlice";
 import { useSelector, useDispatch } from "react-redux";
-import { Redirect } from "react-router";
+import { useHistory } from "react-router-dom";
 
 function Copyright() {
   return (
@@ -53,6 +53,7 @@ const useStyles = makeStyles((theme) => ({
 export function SignUpPage() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [name, setName] = useState();
   const [email, setEmail] = useState();
@@ -79,7 +80,7 @@ export function SignUpPage() {
     e.preventDefault();
     console.log("You hit submit!", name, email, password);
     dispatch(signUpAsync({ name, email, password }));
-    return <Redirect to="/" />;
+    history.push("/");
   };
 
   return (

@@ -166,84 +166,99 @@ export function ProductContainer() {
         <Container className={classes.cardGrid} maxWidth="md">
           <Grid container spacing={4}>
             {products ? (
-              products.map(({ data, description, name, unitPrice, id }) => (
-                <Grid item key={id} xs={12} sm={6} md={4}>
-                  <Card className={classes.card}>
-                    <CardMedia
-                      className={classes.cardMedia}
-                      image="https://source.unsplash.com/random"
-                      title="Image title"
-                    />
-                    <CardContent className={classes.cardContent}>
-                      <Typography gutterBottom variant="h5" component="h2">
-                        {name}
-                      </Typography>
-                      <Typography>{description}</Typography>
-                    </CardContent>
-                    <CardActions className={classes.cardActions}>
-                      <Typography variant="button" color="secondary">
-                        {unitPrice} credits
-                      </Typography>
-                      {data === "inStock" ? (
-                        user ? (
-                          <Button
-                            size="medium"
-                            label={id}
-                            color="secondary"
-                            variant="outlined"
-                            onClick={() => handleAddToCart(id, name, unitPrice)}
-                          >
-                            Add to Cart
-                            <AddShoppingCartIcon />
-                          </Button>
-                        ) : (
-                          <>
+              products.map(
+                ({ data, description, name, unitPrice, image, id }) => (
+                  <Grid item key={id} xs={12} sm={6} md={4}>
+                    <Card className={classes.card}>
+                      {image ? (
+                        <CardMedia
+                          className={classes.cardMedia}
+                          image={image}
+                          title={name}
+                        />
+                      ) : (
+                        <CardMedia
+                          className={classes.cardMedia}
+                          image="https://source.unsplash.com/random"
+                          title="Image title"
+                        />
+                      )}
+                      <CardContent className={classes.cardContent}>
+                        <Typography gutterBottom variant="h5" component="h2">
+                          {name}
+                        </Typography>
+                        <Typography>{description}</Typography>
+                      </CardContent>
+                      <CardActions className={classes.cardActions}>
+                        <Typography variant="button" color="secondary">
+                          {unitPrice} credits
+                        </Typography>
+                        {data === "inStock" ? (
+                          user ? (
                             <Button
                               size="medium"
                               label={id}
                               color="secondary"
                               variant="outlined"
-                              onClick={handleModalOpen}
+                              onClick={() =>
+                                handleAddToCart(id, name, unitPrice)
+                              }
                             >
                               Add to Cart
                               <AddShoppingCartIcon />
                             </Button>
-                            <Modal
-                              open={open}
-                              onClose={handleModalClose}
-                              aria-labelledby="sign in reminder modal"
-                              aria-describedby="modal reminder you to sign in or sign up to add items to your cart"
-                            >
-                              <Box style={modalStyle} className={classes.paper}>
-                                <h1 id="simple-modal-title">
-                                  You have great taste!
-                                </h1>
-                                <h3 id="simple-modal-description">
-                                  Sign in or sign up to add this item to your
-                                  cart.
-                                </h3>
-                                <Button
-                                  label="close-modal"
-                                  color="secondary"
-                                  variant="outlined"
-                                  onClick={handleModalClose}
+                          ) : (
+                            <>
+                              <Button
+                                size="medium"
+                                label={id}
+                                color="secondary"
+                                variant="outlined"
+                                onClick={handleModalOpen}
+                              >
+                                Add to Cart
+                                <AddShoppingCartIcon />
+                              </Button>
+                              <Modal
+                                open={open}
+                                onClose={handleModalClose}
+                                aria-labelledby="sign in reminder modal"
+                                aria-describedby="modal reminder you to sign in or sign up to add items to your cart"
+                              >
+                                <Box
+                                  style={modalStyle}
+                                  className={classes.paper}
                                 >
-                                  Got it
-                                </Button>
-                              </Box>
-                            </Modal>
-                          </>
-                        )
-                      ) : (
-                        <Button size="medium" variant="text" disabled>
-                          Out of Stock
-                          <AddShoppingCartIcon />
-                        </Button>
-                      )}
-                    </CardActions>
-                  </Card>
-                </Grid>
-              ))
+                                  <h1 id="simple-modal-title">
+                                    You have great taste!
+                                  </h1>
+                                  <h3 id="simple-modal-description">
+                                    Sign in or sign up to add this item to your
+                                    cart.
+                                  </h3>
+                                  <Button
+                                    label="close-modal"
+                                    color="secondary"
+                                    variant="outlined"
+                                    onClick={handleModalClose}
+                                  >
+                                    Got it
+                                  </Button>
+                                </Box>
+                              </Modal>
+                            </>
+                          )
+                        ) : (
+                          <Button size="medium" variant="text" disabled>
+                            Out of Stock
+                            <AddShoppingCartIcon />
+                          </Button>
+                        )}
+                      </CardActions>
+                    </Card>
+                  </Grid>
+                )
+              )
             ) : (
               <Typography>
                 Uh oh, looks like we don't have any products right now. Check

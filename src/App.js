@@ -1,20 +1,30 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import { ProductContainer } from "./pages/ProductContainer";
 import { Checkout } from "./pages/Checkout";
 import "./App.css";
 import { AppNavbar } from "./pages/AppNavbar";
 import { SignInPage } from "./pages/SignInPage";
 import { SignUpPage } from "./pages/SignUpPage";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loadUserAsync } from "./features/user/userSlice";
 
 function App() {
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
 
-  useEffect(() => {
-    dispatch(loadUserAsync());
-  }, [dispatch]);
+  useEffect(
+    () => {
+      dispatch(loadUserAsync({ user }));
+    },
+    [dispatch, user],
+    user
+  );
 
   return (
     <div className="App">

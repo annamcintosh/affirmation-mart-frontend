@@ -108,7 +108,7 @@ export function Checkout() {
     setPlacedOrder(order.id);
     await setActiveStep(activeStep + 1);
     await dispatch(placeOrderAsync({ user }));
-    dispatch(clearOrder());
+    // dispatch(clearOrder());
   }
 
   return (

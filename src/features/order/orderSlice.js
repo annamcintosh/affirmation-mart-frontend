@@ -13,7 +13,6 @@ export const getOrderAsync = createAsyncThunk(
   "order/GetOrder",
   async ({ user }) => {
     const userId = user.data.id;
-    console.log(userId);
     const response = await axios.get(`${BASE_URL}/order/user/${userId}`);
     return response.data;
   }
@@ -36,7 +35,6 @@ export const removeProductFromOrderAsync = createAsyncThunk(
   "order/RemoveProductFromOrder",
   async ({ user, unitPrice, productId }) => {
     const orderId = user.data.shoppingOrder;
-    console.log(orderId)
     const response = await axios.patch(`${BASE_URL}/order/remove/${orderId}`, {
       productId,
       unitPrice,
@@ -95,7 +93,7 @@ export const orderSlice = createSlice({
       })
       .addCase(placeOrderAsync.fulfilled, (state, action) => {
         state.status = "idle";
-        state.order = action.payload;
+        // state.user = action.payload;
       });
   },
 });
