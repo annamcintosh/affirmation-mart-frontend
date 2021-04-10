@@ -10,15 +10,15 @@ export default function ShippingForm() {
 
   return (
     <React.Fragment>
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h5" gutterBottom>
         Delivery Information
       </Typography>
-      <Typography variant="h7" gutterBottom>
+      <Typography gutterBottom>
         Your order of affirmations will be emailed to you at the address tied to
         your account:
       </Typography>
       <Divider style={{ margin: "10px" }} />
-      <Typography variant="h7" gutterBottom>
+      <Typography variant="h6" gutterBottom>
         {user.id}
       </Typography>
       <Divider style={{ margin: "10px" }} />

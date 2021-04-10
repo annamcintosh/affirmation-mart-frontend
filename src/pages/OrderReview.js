@@ -37,7 +37,7 @@ export default function OrderReview() {
             <Typography variant="body2">{unitPrice}</Typography>
           </ListItem>
         ))}
-        <ListItem className={classes.listItem}>
+        <ListItem className={classes.listItem} key={total}>
           <ListItemText primary="Total" />
           <Typography variant="subtitle1" className={classes.total}>
             {total}

@@ -51,13 +51,11 @@ export const placeOrderAsync = createAsyncThunk(
     const response = await axios.patch(`${BASE_URL}/order/place/${orderId}`, {
       userId,
     });
-    console.log(response.data);
     const newResponse = {
       id: response.data.id,
       name: response.data.data,
       shoppingOrder: response.data.shoppingOrder,
     };
-    console.log(newResponse);
     return newResponse;
   }
 );
