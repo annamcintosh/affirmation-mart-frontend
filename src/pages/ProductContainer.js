@@ -21,8 +21,8 @@ import { addProductToOrderAsync } from "../features/order/orderSlice";
 
 function Copyright() {
   return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © Anna McIntosh "}
+    <Typography variant="body2" color="textPrimary" align="center">
+      {"Built by Anna McIntosh "}
       {new Date().getFullYear()}
       {" |"}{" "}
       <Link
@@ -134,7 +134,7 @@ export function ProductContainer() {
       <CssBaseline />
       <main>
         <div className={classes.heroContent}>
-          <Container maxWidth="sm">
+          <Container maxWidth="md">
             <Typography
               variant="h4"
               align="center"
@@ -146,7 +146,7 @@ export function ProductContainer() {
             <Typography
               variant="h5"
               align="center"
-              color="textSecondary"
+              color="textPrimary"
               paragraph
             >
               This is your premiere shop for daily pick-me-ups. We believe in
@@ -155,7 +155,7 @@ export function ProductContainer() {
             <Typography
               variant="subtitle2"
               align="center"
-              color="textSecondary"
+              color="textPrimary"
               paragraph
             >
               Everyone should have access to affirmations, so for each order you
@@ -190,7 +190,7 @@ export function ProductContainer() {
                         <Typography>{description}</Typography>
                       </CardContent>
                       <CardActions className={classes.cardActions}>
-                        <Typography variant="button" color="secondary">
+                        <Typography variant="button" color="primary">
                           {unitPrice} credits
                         </Typography>
                         {data === "inStock" ? (
@@ -198,7 +198,7 @@ export function ProductContainer() {
                             <Button
                               size="medium"
                               label={id}
-                              color="secondary"
+                              color="primary"
                               variant="outlined"
                               onClick={() =>
                                 handleAddToCart(id, name, unitPrice)
@@ -212,7 +212,7 @@ export function ProductContainer() {
                               <Button
                                 size="medium"
                                 label={id}
-                                color="secondary"
+                                color="primary"
                                 variant="outlined"
                                 onClick={handleModalOpen}
                               >
@@ -238,7 +238,7 @@ export function ProductContainer() {
                                   </h3>
                                   <Button
                                     label="close-modal"
-                                    color="secondary"
+                                    color="primary"
                                     variant="outlined"
                                     onClick={handleModalClose}
                                   >
@@ -273,7 +273,7 @@ export function ProductContainer() {
         <Typography
           variant="subtitle1"
           align="center"
-          color="textSecondary"
+          color="textPrimary"
           component="p"
         >
           Hope you feel affirmed - you always deserve it!

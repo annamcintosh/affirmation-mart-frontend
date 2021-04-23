@@ -18,8 +18,8 @@ import { placeOrderAsync } from "../features/user/userSlice";
 
 function Copyright() {
   return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © Anna McIntosh "}
+    <Typography variant="body2" color="textPrimary" align="center">
+      {"Built by Anna McIntosh "}
       {new Date().getFullYear()}
       {" |"}{" "}
       <Link
@@ -147,7 +147,7 @@ export function Checkout() {
                       <Button
                         variant="contained"
                         disabled
-                        color="secondary"
+                        color="primary"
                         onClick={handleNext}
                         className={classes.button}
                       >
@@ -156,7 +156,7 @@ export function Checkout() {
                     ) : activeStep === 2 ? (
                       <Button
                         variant="contained"
-                        color="secondary"
+                        color="primary"
                         onClick={handlePlaceOrder}
                         className={classes.button}
                       >
@@ -165,7 +165,7 @@ export function Checkout() {
                     ) : (
                       <Button
                         variant="contained"
-                        color="secondary"
+                        color="primary"
                         onClick={handleNext}
                         className={classes.button}
                       >

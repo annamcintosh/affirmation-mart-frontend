@@ -16,8 +16,8 @@ import { useHistory } from "react-router-dom";
 
 function Copyright() {
   return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © Anna McIntosh "}
+    <Typography variant="body2" color="textPrimary" align="center">
+      {"Built by Anna McIntosh "}
       {new Date().getFullYear()}
       {" |"}{" "}
       <Link
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.main,
   },
   form: {
     width: "100%",

@@ -125,32 +125,31 @@ export function AppNavbar() {
       >
         <Toolbar>
           {user ? (
-            <Button color="secondary" onClick={handleLogout}>
+            <Button color="primary" onClick={handleLogout}>
               Sign Out
             </Button>
           ) : (
             <Link
               to="/sign-in"
-              color="secondary"
-              style={{ textDecoration: "none" }}
+              style={{ textDecoration: "none", color: "#4615b2" }}
             >
               Sign In
             </Link>
           )}
           <Link
             variant="h4"
-            color="secondary"
             className={classes.title}
             to="/"
             style={{
               fontSize: "1.5rem",
               textDecoration: "none",
+              color: "#4615b2",
             }}
           >
             Affirmation-Mart
           </Link>
           <IconButton
-            color="secondary"
+            color="primary"
             variant="contained"
             size="medium"
             aria-label="open shopping cart"
@@ -224,7 +223,7 @@ export function AppNavbar() {
             <h3>Total: {order.total}</h3>
             <Divider />
             <Link
-              color="secondary"
+              color="primary"
               variant="button"
               to="/checkout"
               aria-label="checkout order"
