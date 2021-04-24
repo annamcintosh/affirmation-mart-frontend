@@ -1,3 +1,35 @@
+# Affirmation Mart Frontend
+
+This repository is for the frontend of Affirmation-Mart, an ecommerce site with an uplifting twist. At Affirmation-Mart, users get 50 credits per order that they can use to order affirmations. 
+
+### Link for AWS deployment
+
+Link for heroku deployment
+[https://www.affirmationmart.com/](https://www.affirmationmart.com/)
+
+### Getting Started
+
+In the current version of the project, all users can view the available affirmations, those both in stock and out of stock. If a user would like to order an affirmation, they can sign in or sign up. Users can add and remove affirmations from their cart, and they can go through a checkout flow to place an order.
+
+## Technologies Used
+
+- DynamoDB, React, Serverless Framework, AWS Lambda
+- Redux Toolkit for state management
+- Material-UI
+- Bcrypt for password security
+- Postman
+- AWS S3, Route 53, and Cloudfront
+
+## Preplanning
+
+The first step of my preplanning was to outline the goals of this project. I was interested in creating an ecommerce platform, but I wasn't sure about handling actual monetary payments. As a way to still work through the UI and logic of order processing without taking card information, I decided to go with an automatic credit system, wrapping it in the idea that nobody should have to pay for affirmations. 
+
+## Version 2
+
+For version two I would like to add validation that disables the "add to cart" button once an item is placed in a cart, implement AWS SQS to deliver orders to users' email addresses, and add a UI feature that dynamically displays the number of items in the cart at any given time. 
+
+
+## Create React App / Redux Toolkit
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
 
 ## Available Scripts
