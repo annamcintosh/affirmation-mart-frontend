@@ -1,10 +1,10 @@
-# Affirmation Mart Frontend
+# Affirmation-Mart Frontend
 
 This repository is for the frontend of Affirmation-Mart, an ecommerce site with an uplifting twist. At Affirmation-Mart, users get 50 credits per order that they can use to order affirmations. 
 
 ### Link for AWS deployment
 
-Link for heroku deployment
+Link for AWS deployment
 [https://www.affirmationmart.com/](https://www.affirmationmart.com/)
 
 ### Getting Started
